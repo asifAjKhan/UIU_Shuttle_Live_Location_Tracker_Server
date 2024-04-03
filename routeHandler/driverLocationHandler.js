@@ -22,7 +22,7 @@ router.post("/", postLocation)
 
 // update driver location 
 
-router.put("/:id", updateLocaton)
+router.put("/:driver_id", updateLocaton)
 
 
 // delete driver location

@@ -3,11 +3,11 @@ import Driver from '../models/driver.models.js'
 import bcrypt, { compareSync } from "bcrypt";
 
 export const register = async (req, res) => {
-    const {name, email , password} = req.body;
+    const {role, name, email , password} = req.body;
 
     try{
 
-        if(req.body.role == "student"){
+        if(role == "student"){
 
               // Check if email is already registered
             const existingUser = await Student.findOne({ email });
@@ -19,7 +19,8 @@ export const register = async (req, res) => {
             const hash = bcrypt.hashSync(req.body.password, salt)
 
             const student = new Student({
-                ...req.body,
+                name : name,
+                email : email,
                 password : hash
             })
 
