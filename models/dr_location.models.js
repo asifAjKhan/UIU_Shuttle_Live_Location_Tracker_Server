@@ -4,7 +4,7 @@ const dr_location = mongoose.Schema({
 
     driver_id : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : "Driver"
+        ref : "driverSchema"
     },
 
 
@@ -17,6 +17,8 @@ const dr_location = mongoose.Schema({
         type : String,
         require : true
     },
+
+    
 
    
 

@@ -58,45 +58,62 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
 
+    const {role} = req.body
+    console.log(role)
+
     try{
-        const user = await Student.findOne({email : req.body.email})
+
+        if(role == "student"){
+
+            
+            const user = await Student.findOne({email : req.body.email})
+
+            if(!user) return res.status(404).json({"msg" : " User not found"})
+
         
-        if(!user){
-
-            //return res.status(404).json({"msg" : "User not found"})
-
-            const driver = await Driver.findOne({email : req.body.email})
-
-            if(!driver) return res.status(404).json({"msg" : " User not found"})
-
-            const isPasswordCorrect = await bcrypt.compare(
-                req.body.password,
-                driver.password
-            )
-
-            if(!isPasswordCorrect){
-             return res.json({msg : "Wrong username or password"})
-            }
-
-            return res.status(200).json({msg : " Driver  Log in successfully"})
-            
-
-            
-
-        } 
-
-       // if(!user) return res.status(404).json({"msg" : "Student not found"})
-
             const isPasswordCorrect = await bcrypt.compare(
                 req.body.password,
                 user.password
             )
 
             if(!isPasswordCorrect){
-             return res.json({msg : "Wrong username or password"})
+                return res.json({msg : "Wrong username or password"})
             }
 
-            return res.status(200).json({msg : " Student Log in successfully"})
+            const {password, ...others} = user._doc;
+
+           // console.log(user._doc)
+
+           console.log(others)
+
+            return res.status(200).json({msg : " Student Log in successfully", others})
+
+        }else {
+            if(role == "driver"){
+    
+                const driver = await Driver.findOne({email : req.body.email})
+    
+                if(!driver) return res.status(404).json({"msg" : " User not found"})
+    
+                const isPasswordCorrect = await bcrypt.compare(
+                    req.body.password,
+                    driver.password
+                )
+    
+                if(!isPasswordCorrect){
+                 return res.json({msg : "Wrong username or password"})
+                }
+
+                const {password, ...others} = driver._doc;
+
+              //  console.log(driver._doc)
+
+              console.log(others)
+    
+                return res.status(200).json({msg : " Driver  Log in successfully", others})
+               
+            } 
+        }
 
     }catch(err){
         return res.status(500).json(err)

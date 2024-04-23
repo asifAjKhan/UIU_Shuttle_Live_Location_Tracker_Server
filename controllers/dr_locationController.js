@@ -19,11 +19,10 @@ export const postLocation = async (req, res ) => {
 export const updateLocaton = async (req, res) => {
       try {
 
-        const driver_id = req.params.driver_id;
-        const { latitude, longitude } = req.body;
+        const {_id, latitude, longitude } = req.body;
       
         // Update the post where userId matches
-        Dr_location.findOneAndUpdate({ driver_id: driver_id }, { latitude: latitude, longitude: longitude })
+        Dr_location.findByIdAndUpdate(_id , { latitude: latitude, longitude: longitude }, {new : true})
           .then((data) => {
             res.json(data);
           })
@@ -50,9 +49,20 @@ export const getAllLocation = async (req, res) => {
 
 
 export const deleteLocation = async (req, res) => {
+  const id = req.params.id
   try {
-    const driversLocation = await Dr_location.delete({});
-    res.json(driversLocation);
+    const driversLocation = await Dr_location.findByIdAndDelete(id)
+    .then((data) => {
+      console.log("DriverLocation deleted successfully")
+      res.json(data)
+
+    })
+    .catch((err)=> {
+      console.log("delete not successful" + err)
+      res.json(err)
+    })
+    
+   // console.log("driverLocation deleted successfully"+ driversLocation)
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }

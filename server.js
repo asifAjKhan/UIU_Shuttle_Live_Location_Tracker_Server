@@ -12,12 +12,8 @@ import cors from 'cors'
 
 
 const app = express();
-
-
 app.use(express.json())
-
-
-app.use(cors())
+//app.use(cors())
 
 
 
@@ -29,17 +25,10 @@ mongoose.connect("mongodb://localhost/shuttle")
 
 
 
-
-
-
-
 app.use("/d_location", driverLocationHandler)
 app.use("/auth",authRouther)
 app.use("/driver", driverRouther)
 
-app.get('/', (req, res) => {
-    res.send("Hello Asif")
-})
 
 
 app.listen(3000, () => {
