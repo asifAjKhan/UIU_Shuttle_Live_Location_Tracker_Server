@@ -24,7 +24,9 @@ export const getSingleDriver = async (req, res) => {
         const {driver_id} = req.param;
 
         const driver = await Driver.findOne({driver_id : driver_id});
-        res.json(driver)
+        console.log(driver)
+        const{name, email} = driver;
+        res.json({name, email})
 
     }catch(error){
         console.error('Error fetching users:', error);
